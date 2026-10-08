@@ -116,9 +116,12 @@ class CardImages:
         font = ImageFont.truetype(self.font_path, size)
         # Tokenize into (word, [(piece, highlighted)]) so "[주사]에서" stays one word.
         words = []
-        for tok in text.split():
-            pieces = [(m.group(1), True) if m.group(1) else (m.group(2), False)
-                      for m in re.finditer(r"\[([^\]]+)\]|([^\[]+)", tok)]
+        # Words inside [...] are highlighted; split on spaces *outside* brackets, then wrap each
+        # highlighted word separately so long highlights can still break across lines.
+        for tok in re.findall(r"(?:\[[^\]]*\]|[^\s\[])+", text):
+            pieces = []
+            for m in re.finditer(r"\[([^\]]*)\]|([^\[]+)", tok):
+                pieces.append((m.group(1), True) if m.group(1) is not None else (m.group(2), False))
             words.append(pieces)
         lines, cur, cur_w, max_w = [], [], 0, W * 0.84
         for pieces in words:
