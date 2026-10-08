@@ -1,0 +1,48 @@
+# 비만약 숏폼: 알약 시대가 열렸다 (사실 근거: 2026-10 검색, 아래 sources 참고)
+title: 비만약, 이제 주사 대신 알약?
+voice: ko+f3                      # espeak 오프라인. gemini 는 Kore, edge 는 ko-KR-SunHiNeural
+size: [1080, 1920]
+duration: [30, 60]
+style: cinematic photograph, muted navy and warm amber color grade, shallow depth of field, vertical composition, no readable text, no logos
+sources:
+  - https://www.drugtopics.com/view/fda-approves-orforglipron-for-chronic-weight-management
+  - https://www.healio.com/news/endocrinology/20260401/fda-approves-orforglipron-an-oral-glp1-for-adults-with-obesity
+  - https://www.biopharmadive.com/news/lilly-retatrutide-fda-application-obesity-drug-results/825987/
+scenes:
+  - text: 비만 치료가 주사에서 알약으로 넘어가고 있습니다.
+    images:
+      - "비만약은 [주사]에서 [알약]으로 || a weekly injection pen next to a single white pill on a navy table"
+      - "2026 비만약 [대격변] || close up of hand holding a small pill in warm light"
+  - text: 올해 4월, 릴리의 오포글리프론이 미국 FDA 승인을 받았습니다.
+    say: 올해 사월, 릴리의 오포글리프론이 미국 에프디에이 승인을 받았습니다.
+    images:
+      - "2026년 [4월] FDA 승인 || calendar page and a pharmacy shelf in soft focus"
+      - "릴리 [오포글리프론] || laboratory glassware with amber liquid"
+  - text: 신청 후 50일 만에 통과했는데, 새 신약으로는 2002년 이후 가장 빠릅니다.
+    say: 신청 후 오십 일 만에 통과했는데, 새 신약으로는 이천이년 이후 가장 빠릅니다.
+    images:
+      - "신청 후 [50일] || stopwatch beside a stack of documents"
+      - "2002년 이후 [최단 승인] || fast moving light streaks on a highway at dusk"
+  - text: 물이나 음식 제한 없이, 아무 때나 먹는 알약이라는 점이 핵심입니다.
+    images:
+      - "[아무 때나] 복용 || breakfast table with coffee and a pill organizer"
+      - "물도 음식도 [제한 없음] || glass of water and fork, minimal composition"
+  - text: 임상에서는 72주 동안 최대 12퍼센트 가량 체중이 줄었습니다.
+    say: 임상에서는 칠십이 주 동안 최대 십이 퍼센트 가량 체중이 줄었습니다.
+    images:
+      - "72주 최대 [12.4%] 감량 || bathroom scale in dim light"
+      - "고용량 기준 || measuring tape curled on a wooden surface"
+  - text: 진짜 괴물은 다음 타자, 레타트루타이드입니다. 고용량에서 평균 28퍼센트 감량이 보고됐어요.
+    say: 진짜 괴물은 다음 타자, 레타트루타이드입니다. 고용량에서 평균 이십팔 퍼센트 감량이 보고됐어요.
+    images:
+      - "다음 타자 [레타트루타이드] || futuristic molecule model glowing amber on dark background"
+      - "최대 [28%] 감량 보고 || tall staircase of light going upward in a dark room"
+  - text: 다만 승인 신청은 2027년 1분기 예정이라 아직 먹을 수는 없습니다.
+    say: 다만 승인 신청은 이천이십칠 년 일 분기 예정이라 아직 먹을 수는 없습니다.
+    images:
+      - "FDA 신청은 [2027년 1분기] || empty clinic corridor with a closed door"
+      - "아직은 [임상 단계] || clipboard on a desk with soft window light"
+  - text: 저는 알약 시대가 되면 가격 경쟁이 진짜 시작될 거라고 봅니다. 여러분은 어떻게 보세요?
+    images:
+      - "내 생각: [가격 경쟁] 시작 || two price tags balancing on a scale"
+      - "여러분 생각은? [댓글] || glowing speech bubble shapes floating in dark space"

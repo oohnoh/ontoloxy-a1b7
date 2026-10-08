@@ -13,9 +13,9 @@ def main() -> None:
     ap.add_argument("script", help="script file (.yaml/.json, or .txt with one line per scene)")
     ap.add_argument("-o", "--output", default="output/video.mp4")
     ap.add_argument("--work-dir", help="cache dir for images/audio/clips (default: next to output)")
-    ap.add_argument("--tts", default="edge", choices=["edge", "openai", "silent"])
+    ap.add_argument("--tts", default="edge", choices=["edge", "gemini", "openai", "espeak", "silent"])
     ap.add_argument("--voice", help="e.g. ko-KR-SunHiNeural, ko-KR-InJoonNeural (edge) / alloy (openai)")
-    ap.add_argument("--images", default="openai", choices=["openai", "placeholder", "folder"])
+    ap.add_argument("--images", default="openai", choices=["openai", "gemini", "cards", "placeholder", "folder"])
     ap.add_argument("--image-dir", help="source folder for --images folder")
     ap.add_argument("--images-per-scene", type=int, default=2,
                     help="images per narration line when the script doesn't list them")

@@ -7,6 +7,7 @@ from __future__ import annotations
 import base64
 import colorsys
 import os
+import re
 import random
 import subprocess
 import textwrap
@@ -53,6 +54,91 @@ class OpenAIImages:
         )
         resp.raise_for_status()
         out_path.write_bytes(base64.b64decode(resp.json()["data"][0]["b64_json"]))
+        return out_path
+
+
+def split_prompt(prompt: str) -> tuple[str, str]:
+    """Prompts may be ``"card text || image prompt"``; return (card text, image prompt)."""
+    card, sep, img = prompt.partition("||")
+    return card.strip(), (img.strip() if sep else card.strip())
+
+
+class GeminiImages:
+    """Google Gemini image generation (needs GEMINI_API_KEY)."""
+
+    def __init__(self, width: int, height: int, model: str = "gemini-2.5-flash-image"):
+        self.key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+        if not self.key:
+            raise RuntimeError("GEMINI_API_KEY is not set")
+        self.model, self.width, self.height = model, width, height
+
+    def generate(self, prompt: str, out_path: Path, index: int) -> Path:
+        _, text = split_prompt(prompt)
+        ratio = "9:16" if self.height > self.width else "16:9" if self.width > self.height else "1:1"
+        resp = requests.post(
+            f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent",
+            headers={"x-goog-api-key": self.key},
+            json={"contents": [{"parts": [{"text": text}]}],
+                  "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": ratio}}},
+            timeout=300,
+        )
+        resp.raise_for_status()
+        for part in resp.json()["candidates"][0]["content"]["parts"]:
+            data = part.get("inlineData") or part.get("inline_data")
+            if data:
+                out_path.write_bytes(base64.b64decode(data["data"]))
+                return out_path
+        raise RuntimeError("Gemini returned no image")
+
+
+class CardImages:
+    """Offline dark text cards: big headline (``[word]`` turns amber) on a grid background."""
+
+    BG, INK, AMB = (12, 17, 24), (243, 239, 230), (255, 178, 36)
+
+    def __init__(self, width: int, height: int, **_):
+        self.width, self.height = width, height
+        self.font_path = find_font()
+
+    def generate(self, prompt: str, out_path: Path, index: int) -> Path:
+        text, _ = split_prompt(prompt)
+        W, H = self.width, self.height
+        img = Image.new("RGB", (W, H), self.BG)
+        d = ImageDraw.Draw(img)
+        step = W // 12
+        for x in range(0, W, step):
+            d.line([(x, 0), (x, H)], fill=(24, 31, 41), width=2)
+        for y in range(0, H, step):
+            d.line([(0, y), (W, y)], fill=(24, 31, 41), width=2)
+        d.rectangle([W * 0.08, H * 0.2, W * 0.08 + W * 0.12, H * 0.2 + 12], fill=self.AMB)
+
+        size = int(W * 0.115)
+        font = ImageFont.truetype(self.font_path, size)
+        # Tokenize into (word, [(piece, highlighted)]) so "[주사]에서" stays one word.
+        words = []
+        for tok in text.split():
+            pieces = [(m.group(1), True) if m.group(1) else (m.group(2), False)
+                      for m in re.finditer(r"\[([^\]]+)\]|([^\[]+)", tok)]
+            words.append(pieces)
+        lines, cur, cur_w, max_w = [], [], 0, W * 0.84
+        for pieces in words:
+            ww = sum(d.textlength(t, font=font) for t, _ in pieces) + d.textlength(" ", font=font)
+            if cur and cur_w + ww > max_w:
+                lines.append(cur)
+                cur, cur_w = [], 0
+            cur.append(pieces)
+            cur_w += ww
+        lines.append(cur)
+        y = H * 0.27
+        for line in lines:
+            x = W * 0.08
+            for pieces in line:
+                for t, hl in pieces:
+                    d.text((x, y), t, font=font, fill=self.AMB if hl else self.INK)
+                    x += d.textlength(t, font=font)
+                x += d.textlength(" ", font=font)
+            y += size * 1.3
+        img.save(out_path)
         return out_path
 
 
@@ -106,10 +192,14 @@ class PlaceholderImages:
 def get_provider(name: str, width: int, height: int, folder: str | None = None):
     if name == "openai":
         return OpenAIImages(width, height)
+    if name == "gemini":
+        return GeminiImages(width, height)
+    if name == "cards":
+        return CardImages(width, height)
     if name == "placeholder":
         return PlaceholderImages(width, height)
     if name == "folder":
         if not folder:
             raise ValueError("--image-dir is required with --images folder")
         return FolderImages(folder)
-    raise ValueError(f"unknown image provider {name!r}; choose from openai, placeholder, folder")
+    raise ValueError(f"unknown image provider {name!r}; choose from openai, gemini, cards, placeholder, folder")

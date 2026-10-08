@@ -10,8 +10,13 @@ import yaml
 
 @dataclass
 class Scene:
-    text: str
+    text: str  # shown as caption
     prompts: list[str]
+    say: str | None = None  # spoken text if different (e.g. numbers spelled out)
+
+    @property
+    def speech(self) -> str:
+        return self.say or self.text
 
 
 @dataclass
@@ -41,7 +46,7 @@ def _scene_from(raw, images_per_scene: int, style: str) -> Scene:
     if not images:
         images = [text] * images_per_scene
     prompts = [f"{p}, {style}" if style else p for p in images]
-    return Scene(text=text, prompts=prompts)
+    return Scene(text=text, prompts=prompts, say=(raw.get('say') or '').strip() or None)
 
 
 def load_script(path: str | Path, images_per_scene: int = 2) -> VideoScript:

@@ -35,7 +35,7 @@ def synth_all(provider, script: VideoScript, audio_dir: Path, speed: float) -> l
     """Synthesize every scene; return raw speech durations."""
     durs: list[float] = []
     for i, scene in enumerate(script.scenes):
-        path = provider.synth(scene.text, audio_dir / f"scene_{i:02d}", speed=speed)
+        path = provider.synth(scene.speech, audio_dir / f"scene_{i:02d}", speed=speed)
         durs.append(ff.duration(path))
     return durs
 
