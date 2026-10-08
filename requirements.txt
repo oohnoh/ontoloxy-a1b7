@@ -1,0 +1,4 @@
+edge-tts>=6.1
+pillow>=10
+pyyaml>=6
+requests>=2.31

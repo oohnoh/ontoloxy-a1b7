@@ -1,6 +1,17 @@
 # ontoloxy-a1b7
 core project about a1b7
 
+## video_maker: AI 이미지 + TTS 슬라이드 쇼츠 자동 생성
+
+문장별 TTS 음성에 맞춰 이미지 수십 장을 슬라이드/켄번즈 애니메이션으로 이어 붙여 30~60초 영상을 만듭니다.
+
+```bash
+pip install -r requirements.txt
+python -m video_maker examples/sample.yaml -o output/video.mp4
+```
+
+자세한 내용: [video_maker/README.md](video_maker/README.md)
+
 
 # ebook-auto-generator
 

@@ -1,0 +1,44 @@
+# 예시 스크립트: 문장(scene)마다 TTS 1개, 이미지 여러 장.
+# 각 scene의 음성 길이를 그 scene의 이미지 수로 나눠 자동 싱크됩니다.
+title: 우주의 신비 5가지
+voice: ko-KR-SunHiNeural        # edge-tts 한국어 음성 (남성: ko-KR-InJoonNeural)
+size: [1080, 1920]              # 쇼츠/릴스 세로. 가로 영상은 [1920, 1080]
+duration: [30, 60]              # 최종 길이 범위(초). 벗어나면 말 속도/쉼을 자동 조절
+images_per_scene: 3             # images 를 생략한 scene 의 기본 이미지 수
+style: cinematic, ultra detailed, dramatic lighting, vertical composition, no text
+
+scenes:
+  - text: 우리가 사는 우주에는 아직 풀리지 않은 비밀이 가득합니다.
+    images:
+      - vast starry night sky over a silent mountain range
+      - spiral galaxy glowing in deep space
+      - silhouette of a person looking up at the milky way
+  - text: 첫째, 우주의 95퍼센트는 우리가 볼 수 없는 암흑 물질과 암흑 에너지입니다.
+    images:
+      - invisible dark matter web connecting galaxies, glowing filaments
+      - pie chart made of stars, tiny bright slice and huge dark slice
+      - galaxy cluster bending light, gravitational lensing
+  - text: 둘째, 블랙홀 안에서는 시간조차 멈춘 것처럼 보입니다.
+    images:
+      - supermassive black hole with glowing accretion disk
+      - melting clock floating near a black hole event horizon
+      - light spiraling into darkness
+  - text: 셋째, 우주는 지금 이 순간에도 점점 빠르게 팽창하고 있습니다.
+    images:
+      - galaxies flying apart from each other, motion streaks
+      - balloon covered in tiny galaxies inflating
+      - big bang explosion of light and color
+  - text: 넷째, 지구와 닮은 행성이 우리 은하에만 수십억 개 있을 수 있습니다.
+    images:
+      - earth-like exoplanet with oceans orbiting a red star
+      - alien sunset with two suns over a rocky shore
+      - space telescope observing distant planets
+  - text: 다섯째, 우리 몸을 이루는 원자는 오래전 별 속에서 만들어졌습니다.
+    images:
+      - exploding supernova scattering glowing particles
+      - human hand made of stardust and galaxies
+      - glowing atoms forming a human silhouette
+  - text: 우리는 모두 별의 먼지입니다. 다음 영상에서 더 깊이 알아볼게요!
+    images:
+      - astronaut floating peacefully above earth at sunrise
+      - glowing stardust swirling into the shape of a heart
